@@ -1,3 +1,7 @@
+function unique(value, index, array) {
+    return array.indexOf(value) === index;
+}
+
 function main() {
     // write your code here.
     // call functions `nextString`, `nextFloat` and `nextInt` 
@@ -9,10 +13,14 @@ function main() {
     const N = nextInt();
     const M = nextInt()
     var S = []
+    var sCopy = []
     for (let i = 0; i < M; i++) {
-        S.push(nextString())
+        let str = nextString();
+        sCopy.push(...str.split(''))
+        S.push(str)
     }
 
+    console.log(sCopy.filter(unique))
     const modulus = 998244353;
 
     /**
@@ -20,7 +28,7 @@ function main() {
      * @param {*} N - number of letters per group
      * @returns all the possibilities
      */
-    function generateAllPossibilities(N) {
+    function generateAllPossibilities(N, letters) {
         const allStrings = [];
         const space = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -31,13 +39,16 @@ function main() {
             const [currentString, length] = stack.pop();
 
             if (length === 0) {
+               // console.log('length is 0, i\'ve been told to print this ', currentString)
                 allStrings.push(currentString);
             } else {
+                console.log('length is not 0, i\'ve been told to print this ', currentString)
                 for (let i = 0; i < space.length; i++) {
                     stack.push([currentString + space[i], length - 1]);
                 }
             }
         }
+        console.log(allStrings)
         return allStrings;
     }
 
@@ -76,7 +87,7 @@ function main() {
         return res;
     }
 
-    const possibilitySpace = generateAllPossibilities(N);
+    const possibilitySpace = generateAllPossibilities(N, sCopy);
 
     let totalPower = 0;
     for (let i = 0; i < possibilitySpace.length; i++) {

@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ts": "typescript",
+        "xutility": "cpp",
+        "iostream": "cpp"
+    }
+}

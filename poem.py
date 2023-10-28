@@ -35,39 +35,47 @@ num_inputs = num_inputs.split(" ")
 n = int(num_inputs[0])
 m = int(num_inputs[1])
 
-ryme_dict = {}
+ryme_list = []
 for i in range(0, n):
-    ryme_dict[get_letter(i)] = [i.lower() for i in get_word().split(' ')]
+    ryme_list.append([i.lower() for i in get_word().split(' ')])
+
 
 ryme_lines = []
 for i in range(0, m):
-    ryme_lines.append([i.lower() for i in get_word().split(' ')])
+    ryme_lines.append([i.lower() for i in get_word().split(' ')][-1])
 
+print('dict =>', ryme_list)
+print('lines => ', ryme_lines)
 output = ''
 
-for line in ryme_lines:
-    last_word = line[-1]
-    #print('last word ', last_word)
+ryme_dict = {}
+idx = 0
+already_tracked = []
+for index, last_word in enumerate(ryme_lines):
+
+    for r in ryme_list:
+        if last_word in r and last_word not in already_tracked:
+            already_tracked.extend(r)
+            ryme_dict[get_letter(idx)] = r
+            idx += 1
+
     found = False
     for key, value in ryme_dict.items():
         #print('values ', value)
         if last_word in value:
-            print(last_word, ' in ', value)
+           # print(last_word, ' in ', value)
             output += key
             found = True
-            break;
+            break
     if not found:
         output += 'X'
-"""
-for i in range(len(output)):
-    if i - 1 < 0:
-        if i + 1 > len(output) - 1:
-            pass
-        else:
-            if i + 1
-"""
+
+print('ryme_dict => ', ryme_dict)
+print('already tracked => ', already_tracked)
 
 def parse_string(input):
+    input = [char for char in input]
+    # print('input => ', input)
     if len(input) < 2:
         return 'X'
     for i in range(len(input)):
@@ -78,15 +86,27 @@ def parse_string(input):
                 continue
             else:
                 if i + 1  < len(input) - 1:
-                    if input[i+1] == input[1]:
+                    if input[i+1] == input[i]:
                         continue
                     else:
                         input[i] = 'X'
 
-    return input
-print(output)
+    return ''.join(input)
 output = parse_string(output)
 
 print(output)
 
-print(f'rhymes: {ryme_dict} lines: {ryme_lines}')
+#print(f'rhymes: {ryme_dict} lines: {ryme_lines}')
+
+"""
+2 6
+hash dash crash slash
+underscore four
+
+Waka waka bang splat tick tick hash
+Caret quote back tick dollar dollar dash
+Bang splat equal at dollar underscore
+Percent splat waka waka tilde number four
+Ampersand bracket bracket dot dot slash
+Vertical bar curly bracket comma comma CRASH
+"""
